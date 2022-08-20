@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "telefonos")
-public class Telefonos {
+public class Telefono {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,50 +21,62 @@ public class Telefonos {
 	@Column(name = "contrycode")
 	private String contrycode;
 
-	@OneToOne( cascade = CascadeType.ALL )
-	@JoinColumn(name = "id_user")
-	private Usuarios user;
+	@Column(name = "iduser")
+	private Long iduser;
 
-
-	Telefonos(){}
-	public Usuarios getUser() {
-		return user;
+	public Telefono(String number, String citycode, String contrycode, Long iduser) {
+		this.number = number;
+		this.citycode = citycode;
+		this.contrycode = contrycode;
+		this.iduser = iduser;
 	}
 
-	public void setUser(Usuarios user) {
-		this.user = user;
+	public Telefono() {
+
+	}
+
+	public Long getIduser() {
+		return iduser;
+	}
+
+	public void setIduser(Long iduser) {
+		this.iduser = iduser;
 	}
 
 	public Long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public Telefono setId(Long id) {
 		this.id = id;
+		return this;
 	}
 
 	public String getNumber() {
 		return number;
 	}
 
-	public void setNumber(String number) {
+	public Telefono setNumber(String number) {
 		this.number = number;
+		return this;
 	}
 
 	public String getCitycode() {
 		return citycode;
 	}
 
-	public void setCitycode(String citycode) {
+	public Telefono setCitycode(String citycode) {
 		this.citycode = citycode;
+		return this;
 	}
 
 	public String getContrycode() {
 		return contrycode;
 	}
 
-	public void setContrycode(String contrycode) {
+	public Telefono setContrycode(String contrycode) {
 		this.contrycode = contrycode;
+		return this;
 	}
 
 	public static long getSerialVersionUID() {
@@ -73,10 +85,4 @@ public class Telefonos {
 
 	private static final long serialVersionUID = 1285454306356845879L;
 
-	public Telefonos(String number, String citycode, String contrycode, Usuarios user) {
-		this.number = number;
-		this.citycode = citycode;
-		this.contrycode = contrycode;
-		this.user = user;
-	}
 }

@@ -1,6 +1,6 @@
 package org.springboot.ey.company.springbootserviceusers.pojo;
 
-import org.springboot.ey.company.springbootserviceusers.entity.Telefonos;
+import org.springboot.ey.company.springbootserviceusers.entity.Telefono;
 
 import java.io.Serializable;
 import java.util.List;
@@ -10,7 +10,7 @@ public class DataUsersIn implements Serializable {
 	private String name;
 	private String email;
 	private String password;
-	private List<Telefonos> phones;
+	private List<Telefono> phones;
 
 	public String getName() {
 		return name;
@@ -36,11 +36,11 @@ public class DataUsersIn implements Serializable {
 		this.password = password;
 	}
 
-	public List<Telefonos> getPhones() {
+	public List<Telefono> getPhones() {
 		return phones;
 	}
 
-	public void setPhones(List<Telefonos> phones) {
+	public void setPhones(List<Telefono> phones) {
 		this.phones = phones;
 	}
 }

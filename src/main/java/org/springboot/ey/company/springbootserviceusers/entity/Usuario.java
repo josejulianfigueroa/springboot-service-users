@@ -1,16 +1,20 @@
 package org.springboot.ey.company.springbootserviceusers.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "usuarios")
-public class Usuarios {
+public class Usuario {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +25,8 @@ public class Usuarios {
 
 	@Column(name = "email", unique=true)
 	@NotNull
-	@Email(message = "Email debe ser valido")
+	@NotBlank(message = "Email no puede ir vacío")
+	@NotEmpty(message = "Debe informar email")
 	private String email;
 
 	@Column(name = "password")
@@ -29,14 +34,17 @@ public class Usuarios {
 	
 	@Column(name = "created")
 	@Temporal(TemporalType.DATE)
+	@JsonFormat(pattern = "dd/MM/YYYY")
 	private Date created;
 
 	@Column(name = "modified")
 	@Temporal(TemporalType.DATE)
+	@JsonFormat(pattern = "dd/MM/YYYY")
 	private Date modified;
 
 	@Column(name = "last_login")
 	@Temporal(TemporalType.DATE)
+	@JsonFormat(pattern = "dd/MM/YYYY")
 	private Date last_login;
 
 	@Column(name = "token")
@@ -48,7 +56,7 @@ public class Usuarios {
 	/*@OneToOne( mappedBy = "user", cascade = CascadeType.ALL )
 	private Telefonos phones;*/
 
-	public Usuarios(String name, String email, String password, Date created, Date modified, Date last_login, String token, Boolean isactive) {
+	public Usuario(String name, String email, String password, Date created, Date modified, Date last_login, String token, Boolean isactive) {
 		this.name = name;
 		this.email = email;
 		this.password = password;
@@ -59,79 +67,88 @@ public class Usuarios {
 		this.isactive = isactive;
 	}
 
-	public Usuarios() {
+	public Usuario() {
 	}
 
 	public Long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public Usuario setId(Long id) {
 		this.id = id;
+		return this;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public Usuario setName(String name) {
 		this.name = name;
+		return this;
 	}
 
 	public String getEmail() {
 		return email;
 	}
 
-	public void setEmail(String email) {
+	public Usuario setEmail(String email) {
 		this.email = email;
+		return this;
 	}
 
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
+	public Usuario setPassword(String password) {
 		this.password = password;
+		return this;
 	}
 
 	public Date getCreated() {
 		return created;
 	}
 
-	public void setCreated(Date created) {
+	public Usuario setCreated(Date created) {
 		this.created = created;
+		return this;
 	}
 
 	public Date getModified() {
 		return modified;
 	}
 
-	public void setModified(Date modified) {
+	public Usuario setModified(Date modified) {
 		this.modified = modified;
+		return this;
 	}
 
 	public Date getLast_login() {
 		return last_login;
 	}
 
-	public void setLast_login(Date last_login) {
+	public Usuario setLast_login(Date last_login) {
 		this.last_login = last_login;
+		return this;
 	}
 
 	public String getToken() {
 		return token;
 	}
 
-	public void setToken(String token) {
+	public Usuario setToken(String token) {
 		this.token = token;
+		return this;
 	}
 
 	public Boolean getIsactive() {
 		return isactive;
 	}
 
-	public void setIsactive(Boolean isactive) {
+	public Usuario setIsactive(Boolean isactive) {
 		this.isactive = isactive;
+		return this;
 	}
 
 	public static long getSerialVersionUID() {
