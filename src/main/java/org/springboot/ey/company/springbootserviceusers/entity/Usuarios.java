@@ -2,19 +2,19 @@ package org.springboot.ey.company.springbootserviceusers.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sun.istack.NotNull;
+import org.springboot.ey.company.springbootserviceusers.security.entity.Rol;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "usuarios")
-public class Usuario {
+public class Usuarios {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,7 @@ public class Usuario {
 
 	@Column(name = "password")
 	private String password;
-	
+
 	@Column(name = "created")
 	@Temporal(TemporalType.DATE)
 	@JsonFormat(pattern = "dd/MM/YYYY")
@@ -53,10 +53,7 @@ public class Usuario {
 	@Column(name = "isactive")
 	private Boolean isactive;
 
-	/*@OneToOne( mappedBy = "user", cascade = CascadeType.ALL )
-	private Telefonos phones;*/
-
-	public Usuario(String name, String email, String password, Date created, Date modified, Date last_login, String token, Boolean isactive) {
+	public Usuarios(String name, String email, String password, Date created, Date modified, Date last_login, String token, Boolean isactive) {
 		this.name = name;
 		this.email = email;
 		this.password = password;
@@ -67,14 +64,14 @@ public class Usuario {
 		this.isactive = isactive;
 	}
 
-	public Usuario() {
+	public Usuarios() {
 	}
 
 	public Long getId() {
 		return id;
 	}
 
-	public Usuario setId(Long id) {
+	public Usuarios setId(Long id) {
 		this.id = id;
 		return this;
 	}
@@ -83,7 +80,7 @@ public class Usuario {
 		return name;
 	}
 
-	public Usuario setName(String name) {
+	public Usuarios setName(String name) {
 		this.name = name;
 		return this;
 	}
@@ -92,7 +89,7 @@ public class Usuario {
 		return email;
 	}
 
-	public Usuario setEmail(String email) {
+	public Usuarios setEmail(String email) {
 		this.email = email;
 		return this;
 	}
@@ -101,7 +98,7 @@ public class Usuario {
 		return password;
 	}
 
-	public Usuario setPassword(String password) {
+	public Usuarios setPassword(String password) {
 		this.password = password;
 		return this;
 	}
@@ -110,7 +107,7 @@ public class Usuario {
 		return created;
 	}
 
-	public Usuario setCreated(Date created) {
+	public Usuarios setCreated(Date created) {
 		this.created = created;
 		return this;
 	}
@@ -119,7 +116,7 @@ public class Usuario {
 		return modified;
 	}
 
-	public Usuario setModified(Date modified) {
+	public Usuarios setModified(Date modified) {
 		this.modified = modified;
 		return this;
 	}
@@ -128,7 +125,7 @@ public class Usuario {
 		return last_login;
 	}
 
-	public Usuario setLast_login(Date last_login) {
+	public Usuarios setLast_login(Date last_login) {
 		this.last_login = last_login;
 		return this;
 	}
@@ -137,7 +134,7 @@ public class Usuario {
 		return token;
 	}
 
-	public Usuario setToken(String token) {
+	public Usuarios setToken(String token) {
 		this.token = token;
 		return this;
 	}
@@ -146,7 +143,7 @@ public class Usuario {
 		return isactive;
 	}
 
-	public Usuario setIsactive(Boolean isactive) {
+	public Usuarios setIsactive(Boolean isactive) {
 		this.isactive = isactive;
 		return this;
 	}

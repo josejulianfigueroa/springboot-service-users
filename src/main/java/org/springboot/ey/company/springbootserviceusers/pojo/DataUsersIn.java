@@ -3,7 +3,9 @@ package org.springboot.ey.company.springbootserviceusers.pojo;
 import org.springboot.ey.company.springbootserviceusers.entity.Telefono;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class DataUsersIn implements Serializable {
 
@@ -11,6 +13,15 @@ public class DataUsersIn implements Serializable {
 	private String email;
 	private String password;
 	private List<Telefono> phones;
+	private Set<String> roles = new HashSet<>();
+
+	public Set<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<String> roles) {
+		this.roles = roles;
+	}
 
 	public String getName() {
 		return name;
