@@ -1,14 +1,18 @@
 package org.springboot.ey.company.springbootserviceusers.service;
 
-
-import org.springboot.ey.company.springbootserviceusers.pojo.DataUsersIn;
+import org.springboot.ey.company.springbootserviceusers.dto.DataUsersIn;
 import org.springboot.ey.company.springbootserviceusers.entity.Usuarios;
-
 import java.util.List;
 
 public interface IUsuariosService {
 
-	public List<Usuarios> findAll();
-	public Usuarios findById(Long id);
-	public Usuarios addUser(DataUsersIn user);
+	List<Usuarios> findAll();
+	Usuarios findById(Long id);
+	boolean existsById(Long id);
+	Usuarios findByEmail(String email);
+	Usuarios addUser(DataUsersIn user);
+	void updateUserJwt(String email, String token);
+	boolean existsByEmail(String email);
+	void deleteById(Long id);
+
 }

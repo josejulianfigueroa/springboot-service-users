@@ -5,9 +5,6 @@ import java.util.regex.Pattern;
 
 public class PasswordValidator {
 
-    // digit + lowercase char + uppercase char + punctuation + symbol
-   // private static final String PASSWORD_PATTERN =
-    //        "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
     private static final String PASSWORD_PATTERN =
             "^([A-Z]{1})([a-z]{1,})(\\d{2})$";
 

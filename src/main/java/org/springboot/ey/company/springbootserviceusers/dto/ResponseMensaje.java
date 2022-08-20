@@ -1,4 +1,4 @@
-package org.springboot.ey.company.springbootserviceusers.pojo;
+package org.springboot.ey.company.springbootserviceusers.dto;
 
 public class ResponseMensaje {
 

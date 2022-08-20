@@ -2,15 +2,10 @@ package org.springboot.ey.company.springbootserviceusers.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sun.istack.NotNull;
-import org.springboot.ey.company.springbootserviceusers.security.entity.Rol;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "usuarios")
@@ -21,6 +16,9 @@ public class Usuarios {
 	private Long id;
 
 	@Column(name = "name")
+	@NotNull
+	@NotBlank(message = "name no puede ir vacío")
+	@NotEmpty(message = "Debe informar name")
 	private String name;
 
 	@Column(name = "email", unique=true)
@@ -30,6 +28,9 @@ public class Usuarios {
 	private String email;
 
 	@Column(name = "password")
+	@NotNull
+	@NotBlank(message = "password no puede ir vacío")
+	@NotEmpty(message = "Debe informar password")
 	private String password;
 
 	@Column(name = "created")

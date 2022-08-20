@@ -1,8 +1,6 @@
 package org.springboot.ey.company.springbootserviceusers.entity;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.List;
 
 @Entity
 @Table(name = "telefonos")
