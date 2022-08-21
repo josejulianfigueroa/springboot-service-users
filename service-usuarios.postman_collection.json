@@ -1,0 +1,245 @@
+{
+	"info": {
+		"_postman_id": "7916e865-93fa-4c3c-a01c-a043f2b9fb63",
+		"name": "service-usuarios",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "721441"
+	},
+	"item": [
+		{
+			"name": "Insertar Usuario (incluye autenticación con JWT)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"julian\",\r\n    \"email\": \"julian@gmail.com\",\r\n    \"password\": \"Arrrr42\",\r\n    \"phones\": [\r\n        {\r\n            \"number\": \"87104600\",\r\n            \"citycode\": \"9\",\r\n            \"contrycode\": \"56\"\r\n        },\r\n        {\r\n            \"number\": \"5555\",\r\n            \"citycode\": \"9\",\r\n            \"contrycode\": \"56\"\r\n        }\r\n    ],\r\n   \"roles\": [\"admin\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8050/api/v1/usuarios/insertar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8050",
+					"path": [
+						"api",
+						"v1",
+						"usuarios",
+						"insertar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar Usuarios",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqdWxpYW4yQGdtYWlsLmNvbSIsImlhdCI6MTY2MTA1ODc3OCwiZXhwIjoxNjYxMDU4ODM4fQ.cwtbu97UxOidlgP9YhoIJxuqrxX0Ooo6t94TqLs1lOdPiVhb4A1LByzL6N99rjuoTSVV37OkwoNz7CEpYqm0qw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8050/api/v1/usuarios/listar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8050",
+					"path": [
+						"api",
+						"v1",
+						"usuarios",
+						"listar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar Telefonos",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqdWxpYW5AZ21haWwuY29tIiwiaWF0IjoxNjYxMDMwMDEzLCJleHAiOjE2NjEwNjYwMTN9.FFX3oQhdjRMdNVJlSikjSF_FtBU1DpKA79GWfQFc8uL-8IRBwBCFyy08k8UOLy263MHfR48fju02UbVPuzDgEw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8050/api/v1/telefonos/listar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8050",
+					"path": [
+						"api",
+						"v1",
+						"telefonos",
+						"listar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Autenticar Nuevo Usuario Jwt",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"julian\",\r\n    \"nombreUsuario\": \"julian\",\r\n    \"email\": \"jj@gmail.com\",\r\n    \"password\":\"hola\",\r\n    \"roles\": [\"admin\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8050/api/v1/auth/nuevo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8050",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"nuevo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Usuario Jwt",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"nombreUsuario\": \"julian@gmail.com\", \"password\":\"Arrrr42\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8050/api/v1/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8050",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener un Usuario en Específico",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqdWxpYW5AZ21haWwuY29tIiwiaWF0IjoxNjYxMDMyNDQ3LCJleHAiOjE2NjEwNjg0NDd9.XHqCP9JmQ_9eaCTYx-ltgDuSh_io9J5-KRagzL_D5EuBi1TLxpez1T3bDH3CEOpXe4MTbf44koVLwNBORMqnSw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8050/api/v1/usuarios/ver/julian@gmail.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8050",
+					"path": [
+						"api",
+						"v1",
+						"usuarios",
+						"ver",
+						"julian@gmail.com"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar Usuario",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqdWxpYW5AZ21haWwuY29tIiwiaWF0IjoxNjYxMDMyNDQ3LCJleHAiOjE2NjEwNjg0NDd9.XHqCP9JmQ_9eaCTYx-ltgDuSh_io9J5-KRagzL_D5EuBi1TLxpez1T3bDH3CEOpXe4MTbf44koVLwNBORMqnSw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8050/api/v1/usuarios/delete/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8050",
+					"path": [
+						"api",
+						"v1",
+						"usuarios",
+						"delete",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

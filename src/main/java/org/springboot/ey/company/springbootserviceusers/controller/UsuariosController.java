@@ -3,7 +3,6 @@ package org.springboot.ey.company.springbootserviceusers.controller;
 import org.springboot.ey.company.springbootserviceusers.dto.DataUsersIn;
 import org.springboot.ey.company.springbootserviceusers.entity.Usuarios;
 import org.springboot.ey.company.springbootserviceusers.security.controller.AuthController;
-import org.springboot.ey.company.springbootserviceusers.security.dto.NuevoUsuario;
 import org.springboot.ey.company.springbootserviceusers.service.IUsuariosService;
 import org.springboot.ey.company.springbootserviceusers.util.EmailValidator;
 import org.springboot.ey.company.springbootserviceusers.util.PasswordValidator;
@@ -28,9 +27,9 @@ public class UsuariosController {
 	private final String PASSWORD_INCORRECTO = "El password debe tener el siguiente formatato: Una Mayuscula, letras minúsculas, y dos numeros, ejemplo Aprueba22";
 	private final String EMAIL_INCORRECTO = "El email no es válido";
 	private final String SIN_RESULTADOS = "No existen registros";
-	private final String SIN_RESULTADO = "No existen el registro";
+	private final String SIN_RESULTADO = "No existe el registro";
 	private final String ID_NO_EXISTE = "No existe el id en la base de datos";
-	private final String USUARIO_ELIMINADO = "el usuario ha sido eliminado con éxito";
+	private final String USUARIO_ELIMINADO = "El usuario ha sido eliminado con éxito";
 
 	@Autowired
 	AuthController authController;
@@ -46,8 +45,7 @@ public class UsuariosController {
 			if (validatorPassword.isValid(dataUsersIn.getPassword())) {
 				Usuarios users = usuariosService.addUser(dataUsersIn);
 				if (users != null) {
-					NuevoUsuario objNuevoUsuario = new NuevoUsuario(dataUsersIn.getName(), dataUsersIn.getEmail(), dataUsersIn.getEmail(), dataUsersIn.getPassword(), dataUsersIn.getRoles());
-					authController.nuevoUsuarioJwt(objNuevoUsuario);
+					authController.getInUser(dataUsersIn.getName(), dataUsersIn.getEmail(), dataUsersIn.getEmail(), dataUsersIn.getPassword(), dataUsersIn.getRoles());
 					return ResponseUtil.getResponseOk(HttpStatus.CREATED.toString(), users);
 				} else {
 					return ResponseUtil.getResponseMensaje(HttpStatus.BAD_REQUEST.toString(), EMAIL_EXISTE);

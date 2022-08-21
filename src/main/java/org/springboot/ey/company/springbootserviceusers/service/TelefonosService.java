@@ -8,17 +8,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 @Service
-public class TelefonosServiceImpl implements ITelefonosService{
-
+public class TelefonosService {
 
 	@Autowired
 	private TelefonosDao telefonosDao;
-	
-	@Override
-	@Transactional(readOnly = true)
+
 	public List<Telefono> findAll() {
-		return (List<Telefono>) telefonosDao.findAll();
+		return telefonosDao.findAll();
 	}
+
 
 }

@@ -7,12 +7,10 @@ import java.util.List;
 public interface IUsuariosService {
 
 	List<Usuarios> findAll();
-	Usuarios findById(Long id);
 	boolean existsById(Long id);
 	Usuarios findByEmail(String email);
 	Usuarios addUser(DataUsersIn user);
-	void updateUserJwt(String email, String token);
-	boolean existsByEmail(String email);
+	void updateUserJwt(String email, String token, boolean activo);
 	void deleteById(Long id);
 
 }

@@ -27,7 +27,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 @CrossOrigin
 public class AuthController {
 
@@ -47,7 +47,7 @@ public class AuthController {
     JwtProvider jwtProvider;
 
     @Autowired
-    private IUsuariosService usuariosService;
+    IUsuariosService usuariosService;
 
     @PostMapping("/nuevo")
     public ResponseEntity<?> nuevoUsuarioJwt(@Valid @RequestBody NuevoUsuario nuevoUsuario){
@@ -55,15 +55,7 @@ public class AuthController {
             return new ResponseEntity(new Mensaje("El nombre ya existe"), HttpStatus.BAD_REQUEST);
         if(usuarioService.existsByEmail(nuevoUsuario.getEmail()))
             return new ResponseEntity(new Mensaje("El email ya existe"), HttpStatus.BAD_REQUEST);
-        Usuario usuario =
-                new Usuario(nuevoUsuario.getNombre(), nuevoUsuario.getNombreUsuario(), nuevoUsuario.getEmail(),
-                        passwordEncoder.encode(nuevoUsuario.getPassword()));
-        Set<Rol> roles = new HashSet<>();
-        roles.add(rolService.getByRolNombre(RolNombre.ROLE_USER).get());
-        if(nuevoUsuario.getRoles().contains("admin"))
-            roles.add(rolService.getByRolNombre(RolNombre.ROLE_ADMIN).get());
-        usuario.setRoles(roles);
-        usuarioService.save(usuario);
+        getInUser(nuevoUsuario.getNombre(),nuevoUsuario.getNombreUsuario(), nuevoUsuario.getEmail(), nuevoUsuario.getPassword(), nuevoUsuario.getRoles() );
         return new ResponseEntity(new Mensaje("Usuario guardado con exito"), HttpStatus.CREATED);
     }
 
@@ -77,7 +69,20 @@ public class AuthController {
         String jwt = jwtProvider.generateToken(authentication);
         UserDetails userDetails = (UserDetails)authentication.getPrincipal();
         JwtDto jwtDto = new JwtDto(jwt, userDetails.getUsername(), userDetails.getAuthorities());
-        usuariosService.updateUserJwt(jwtDto.getNombreUsuario(), jwtDto.getToken());
+        usuariosService.updateUserJwt(jwtDto.getNombreUsuario(), jwtDto.getToken(), true);
         return new ResponseEntity(jwtDto, HttpStatus.OK);
+    }
+
+
+    public void getInUser(String nombre, String nombreUsuario, String email, String password, Set<String> rolesIn) {
+        Usuario usuario =
+                new Usuario(nombre, nombreUsuario, email,
+                        passwordEncoder.encode(password));
+        Set<Rol> roles = new HashSet<>();
+        roles.add(rolService.getByRolNombre(RolNombre.ROLE_USER).get());
+        if(rolesIn.contains("admin"))
+            roles.add(rolService.getByRolNombre(RolNombre.ROLE_ADMIN).get());
+        usuario.setRoles(roles);
+        usuarioService.save(usuario);
     }
 }

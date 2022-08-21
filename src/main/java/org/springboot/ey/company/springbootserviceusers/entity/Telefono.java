@@ -29,6 +29,12 @@ public class Telefono {
 		this.iduser = iduser;
 	}
 
+	public Telefono(String number, String citycode, String contrycode) {
+		this.number = number;
+		this.citycode = citycode;
+		this.contrycode = contrycode;
+	}
+
 	public Telefono() {
 
 	}

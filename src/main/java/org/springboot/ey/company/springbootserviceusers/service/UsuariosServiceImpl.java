@@ -8,7 +8,6 @@ import org.springboot.ey.company.springbootserviceusers.entity.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Date;
 import java.util.List;
 
@@ -24,13 +23,7 @@ public class UsuariosServiceImpl implements IUsuariosService{
 	@Override
 	@Transactional(readOnly = true)
 	public List<Usuarios> findAll() {
-		return (List<Usuarios>) usuariosDao.findAll();
-	}
-
-	@Override
-	@Transactional(readOnly = true)
-	public Usuarios findById(Long id) {
-		return usuariosDao.findById(id).orElse(null);
+		return usuariosDao.findAll();
 	}
 
 	@Override
@@ -40,11 +33,8 @@ public class UsuariosServiceImpl implements IUsuariosService{
 	@Override
 	public Usuarios addUser(DataUsersIn dataUsersIn) {
 		Usuarios user = usuariosDao.findByEmail(dataUsersIn.getEmail());
-		/*List<Usuarios> usuariosList = usuariosDao.findAll().stream()
-				.filter(e -> e.getEmail().equals(dataUsersIn.getEmail()))
-				.collect(Collectors.toList());*/
 		Usuarios usuariosAdd = null;
-		if (user == null) { 			// Si el usuarios by email no existe en la base de datos
+		if (user == null) {
 			usuariosAdd = usuariosDao.save(new Usuarios(dataUsersIn.getName(), dataUsersIn.getEmail(), dataUsersIn.getPassword(), new Date(), new Date(), new Date(),  "", false));
 			if(!dataUsersIn.getPhones().isEmpty()){
 		for (Telefono objFono : dataUsersIn.getPhones()) {
@@ -54,18 +44,15 @@ public class UsuariosServiceImpl implements IUsuariosService{
 		return usuariosAdd;
 	}
 	@Override
-	public void updateUserJwt(String email, String token) {
+	public void updateUserJwt(String email, String token, boolean activo) {
 		Usuarios user = usuariosDao.findByEmail(email);
-		user.setIsactive(true);
+		if(user != null){
+		user.setIsactive(activo);
 		user.setToken(token);
 		user.setLast_login(new Date());
-		usuariosDao.save(user);
+		usuariosDao.save(user);}
 	}
 
-	@Override
-	public boolean existsByEmail(String email){
-		return usuariosDao.existsByEmail(email);
-	}
 	@Override
 	public boolean existsById(Long id){
 		return usuariosDao.existsById(id);
