@@ -8,7 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 /**
- * Clase para crear los Roles
+ * Clase para crear los Roles al iniciar el servicio
  */
 
 @Component

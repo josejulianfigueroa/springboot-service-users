@@ -1,8 +1,10 @@
 package org.springboot.ey.company.springbootserviceusers.controller;
 
 import org.springboot.ey.company.springbootserviceusers.dto.DataUsersIn;
+import org.springboot.ey.company.springbootserviceusers.dto.DataUsersPhone;
 import org.springboot.ey.company.springbootserviceusers.entity.Usuarios;
 import org.springboot.ey.company.springbootserviceusers.security.controller.AuthController;
+import org.springboot.ey.company.springbootserviceusers.security.dto.LoginUsuario;
 import org.springboot.ey.company.springbootserviceusers.service.IUsuariosService;
 import org.springboot.ey.company.springbootserviceusers.util.EmailValidator;
 import org.springboot.ey.company.springbootserviceusers.util.PasswordValidator;
@@ -30,6 +32,8 @@ public class UsuariosController {
 	private final String SIN_RESULTADO = "No existe el registro";
 	private final String ID_NO_EXISTE = "No existe el id en la base de datos";
 	private final String USUARIO_ELIMINADO = "El usuario ha sido eliminado con éxito";
+	private final String USUARIO_ACTUALIZADO_OK = "Los datos han sido actualizados con éxito";
+	private final String USUARIO_YA_EXITE = "Usuario ya existe";
 
 	@Autowired
 	AuthController authController;
@@ -39,30 +43,35 @@ public class UsuariosController {
 
 	@PostMapping(value = "/insertar", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView addUser(@Valid @RequestBody DataUsersIn dataUsersIn)  {
-		EmailValidator validatorEmail = new EmailValidator();
-		if(validatorEmail.isValid(dataUsersIn.getEmail())) {
-			PasswordValidator validatorPassword = new PasswordValidator();
-			if (validatorPassword.isValid(dataUsersIn.getPassword())) {
-				Usuarios users = usuariosService.addUser(dataUsersIn);
-				if (users != null) {
-					authController.getInUser(dataUsersIn.getName(), dataUsersIn.getEmail(), dataUsersIn.getEmail(), dataUsersIn.getPassword(), dataUsersIn.getRoles());
-					return ResponseUtil.getResponseOk(HttpStatus.CREATED.toString(), users);
-				} else {
-					return ResponseUtil.getResponseMensaje(HttpStatus.BAD_REQUEST.toString(), EMAIL_EXISTE);
-				}
-			} else {
-				return ResponseUtil.getResponseMensaje(HttpStatus.BAD_REQUEST.toString(), PASSWORD_INCORRECTO);
+		Usuarios usuarioExiste = usuariosService.findByEmail(dataUsersIn.getEmail());
+		if (usuarioExiste == null) {
+			EmailValidator validatorEmail = new EmailValidator();
+				if(validatorEmail.isValid(dataUsersIn.getEmail())) {
+					PasswordValidator validatorPassword = new PasswordValidator();
+						if (validatorPassword.isValid(dataUsersIn.getPassword())) {
+							Usuarios users = usuariosService.addUser(dataUsersIn);
+								if (users != null) {
+									authController.getInUser(dataUsersIn.getName(), dataUsersIn.getEmail(), dataUsersIn.getEmail(), dataUsersIn.getPassword(), dataUsersIn.getRoles());
+									authController.login(new LoginUsuario().setNombreUsuario(dataUsersIn.getEmail()).setPassword(dataUsersIn.getPassword()));
+									return ResponseUtil.getResponseOk(HttpStatus.CREATED.toString(), users);
+								} else {
+									return ResponseUtil.getResponseMensaje(HttpStatus.BAD_REQUEST.toString(), EMAIL_EXISTE);
+								}
+						} else {
+							return ResponseUtil.getResponseMensaje(HttpStatus.BAD_REQUEST.toString(), PASSWORD_INCORRECTO);
+					}
+				}else {
+						return ResponseUtil.getResponseMensaje(HttpStatus.BAD_REQUEST.toString(), EMAIL_INCORRECTO);
 			}
-		}else {
-			return ResponseUtil.getResponseMensaje(HttpStatus.BAD_REQUEST.toString(), EMAIL_INCORRECTO);
+		} else {
+			return ResponseUtil.getResponseMensaje(HttpStatus.BAD_REQUEST.toString(), USUARIO_YA_EXITE);
 		}
 	}
 
 
 	@GetMapping(value = "/listar", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ModelAndView listarUsuarios(){
-		List<Usuarios> usuarios;
-		usuarios = usuariosService.findAll();
+	public ModelAndView listUsers(){
+		List<Usuarios> usuarios = usuariosService.findAll();
 		if (!usuarios.isEmpty()) {
 			return ResponseUtil.getResponseOkListUsuarios(HttpStatus.OK.toString(), usuarios);
 		} else {
@@ -87,5 +96,26 @@ public class UsuariosController {
 			return ResponseUtil.getResponseMensaje(HttpStatus.NOT_FOUND.toString(), ID_NO_EXISTE);
 		usuariosService.deleteById(id);
 		return ResponseUtil.getResponseMensaje(HttpStatus.OK.toString(), USUARIO_ELIMINADO);
+	}
+
+	@PreAuthorize("hasRole('ADMIN')")
+	@PutMapping("/update/{id}")
+	public ModelAndView getUpdateUser(@PathVariable Long id, @RequestBody DataUsersPhone dataUsersIn) {
+		if (!usuariosService.existsById(id)) {
+			return ResponseUtil.getResponseMensaje(HttpStatus.NOT_FOUND.toString(), ID_NO_EXISTE);
+		} else {
+			EmailValidator validatorEmail = new EmailValidator();
+			if (validatorEmail.isValid(dataUsersIn.getEmail())) {
+				PasswordValidator validatorPassword = new PasswordValidator();
+				if (validatorPassword.isValid(dataUsersIn.getPassword())) {
+					usuariosService.updateUserAndPhones(id, dataUsersIn);
+					return ResponseUtil.getResponseMensaje(HttpStatus.OK.toString(), USUARIO_ACTUALIZADO_OK);
+				} else {
+					return ResponseUtil.getResponseMensaje(HttpStatus.BAD_REQUEST.toString(), PASSWORD_INCORRECTO);
+				}
+			} else {
+				return ResponseUtil.getResponseMensaje(HttpStatus.BAD_REQUEST.toString(), EMAIL_INCORRECTO);
+			}
+		}
 	}
 }

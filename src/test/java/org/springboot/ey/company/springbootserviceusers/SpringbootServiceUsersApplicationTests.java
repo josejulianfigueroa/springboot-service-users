@@ -22,6 +22,7 @@ import java.util.Set;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -133,7 +134,7 @@ public class SpringbootServiceUsersApplicationTests {
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(dataUsersIn)))
-				.andExpect(content().string("{\"codigo\":\"400 BAD_REQUEST\",\"mensaje\":\"El email ya existe en la base de datos\"}")).andReturn();
+				.andExpect(content().string("{\"codigo\":\"400 BAD_REQUEST\",\"mensaje\":\"Usuario ya existe\"}")).andReturn();
 	}
 
 	@Test
@@ -293,7 +294,7 @@ public class SpringbootServiceUsersApplicationTests {
 		String responseData = mvcResult.getResponse().getContentAsString();
 		JwtDtoTest responseDto = new Gson().fromJson(responseData, JwtDtoTest.class);
 
-		this.mvc.perform(delete("http://localhost:8050/api/v1/usuarios/delete/5")
+		this.mvc.perform(delete("http://localhost:8050/api/v1/usuarios/delete/6")
 				.contentType(MediaType.APPLICATION_JSON)
 				.header("Authorization", "Bearer " + responseDto.getToken())
 				.accept(MediaType.APPLICATION_JSON))
@@ -305,4 +306,57 @@ public class SpringbootServiceUsersApplicationTests {
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(content().string("{\"codigo\":\"204 NO_CONTENT\",\"mensaje\":\"No existe el registro\"}")).andReturn();
 	}
+
+	@Test
+	public void testEndpointUpdateUsuario() throws Exception {
+		List<Telefono> phonesList = new ArrayList<>();
+		Telefono phone1 = new Telefono("87104600", "9", "56");
+		Telefono phone2 = new Telefono("44444600", "9", "56");
+		phonesList.add(phone1);
+		phonesList.add(phone2);
+		Set<String> roles = new HashSet<>();
+		roles.add("admin");
+		DataUsersInTest dataUsersIn = new DataUsersInTest();
+		dataUsersIn.setEmail("julian34@gmail.com");
+		dataUsersIn.setName("julian");
+		dataUsersIn.setPassword("Arrrr22");
+		dataUsersIn.setRoles(roles);
+		dataUsersIn.setPhones(phonesList);
+
+		this.mvc.perform(post("http://localhost:8050/api/v1/usuarios/insertar")
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON)
+				.content(new ObjectMapper().writeValueAsString(dataUsersIn)))
+				.andExpect(status()
+						.isOk()).andReturn();
+
+		LoginUsuarioTest dataLogin = new LoginUsuarioTest("julian34@gmail.com", "Arrrr22");
+		MvcResult mvcResult = this.mvc.perform(post("http://localhost:8050/api/v1/auth/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON)
+				.content(new ObjectMapper().writeValueAsString(dataLogin)))
+				.andExpect(status()
+						.isOk()).andReturn();
+
+		String responseData = mvcResult.getResponse().getContentAsString();
+		JwtDtoTest responseDto = new Gson().fromJson(responseData, JwtDtoTest.class);
+
+		List<Telefono> phonesList2 = new ArrayList<>();
+		Telefono phone3 = new Telefono().setCitycode("1").setContrycode("56").setNumber("8888").setId(1L);
+		phonesList2.add(phone3);
+		DataUsersInTest dataUsersIn2 = new DataUsersInTest();
+		dataUsersIn2.setEmail("julian34@gmail.com");
+		dataUsersIn2.setName("julian Figueroa");
+		dataUsersIn2.setPassword("Arrrr23");
+		dataUsersIn2.setPhones(phonesList2);
+
+		this.mvc.perform(put("http://localhost:8050/api/v1/usuarios/update/4")
+				.contentType(MediaType.APPLICATION_JSON)
+				.header("Authorization", "Bearer " + responseDto.getToken())
+				.accept(MediaType.APPLICATION_JSON)
+				.content(new ObjectMapper().writeValueAsString(dataUsersIn2)))
+				.andExpect(content().string("{\"codigo\":\"200 OK\",\"mensaje\":\"Los datos han sido actualizados con éxito\"}")).andReturn();
+
+	}
+
 }

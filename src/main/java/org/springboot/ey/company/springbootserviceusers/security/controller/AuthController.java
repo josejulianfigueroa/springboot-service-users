@@ -20,7 +20,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.HashSet;
@@ -56,13 +55,11 @@ public class AuthController {
         if(usuarioService.existsByEmail(nuevoUsuario.getEmail()))
             return new ResponseEntity(new Mensaje("El email ya existe"), HttpStatus.BAD_REQUEST);
         getInUser(nuevoUsuario.getNombre(),nuevoUsuario.getNombreUsuario(), nuevoUsuario.getEmail(), nuevoUsuario.getPassword(), nuevoUsuario.getRoles() );
-        return new ResponseEntity(new Mensaje("Usuario guardado con exito"), HttpStatus.CREATED);
+        return new ResponseEntity(new Mensaje("Usuario guardado con éxito"), HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<JwtDto> login(@Valid @RequestBody LoginUsuario loginUsuario, BindingResult bindingResult){
-        if(bindingResult.hasErrors())
-            return new ResponseEntity(new Mensaje("campos mal puestos"), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<JwtDto> login(@Valid @RequestBody LoginUsuario loginUsuario){
         Authentication authentication =
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUsuario.getNombreUsuario(), loginUsuario.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -75,9 +72,7 @@ public class AuthController {
 
 
     public void getInUser(String nombre, String nombreUsuario, String email, String password, Set<String> rolesIn) {
-        Usuario usuario =
-                new Usuario(nombre, nombreUsuario, email,
-                        passwordEncoder.encode(password));
+        Usuario usuario = new Usuario(nombre, nombreUsuario, email, passwordEncoder.encode(password));
         Set<Rol> roles = new HashSet<>();
         roles.add(rolService.getByRolNombre(RolNombre.ROLE_USER).get());
         if(rolesIn.contains("admin"))

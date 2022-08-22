@@ -36,7 +36,6 @@ public class Telefono {
 	}
 
 	public Telefono() {
-
 	}
 
 	public Long getIduser() {

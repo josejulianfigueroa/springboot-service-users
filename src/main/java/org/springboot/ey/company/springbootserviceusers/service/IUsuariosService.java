@@ -1,6 +1,7 @@
 package org.springboot.ey.company.springbootserviceusers.service;
 
 import org.springboot.ey.company.springbootserviceusers.dto.DataUsersIn;
+import org.springboot.ey.company.springbootserviceusers.dto.DataUsersPhone;
 import org.springboot.ey.company.springbootserviceusers.entity.Usuarios;
 import java.util.List;
 
@@ -11,6 +12,7 @@ public interface IUsuariosService {
 	Usuarios findByEmail(String email);
 	Usuarios addUser(DataUsersIn user);
 	void updateUserJwt(String email, String token, boolean activo);
+	void updateUserAndPhones(Long id, DataUsersPhone dataUsersIn);
 	void deleteById(Long id);
 
 }

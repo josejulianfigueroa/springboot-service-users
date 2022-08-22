@@ -2,6 +2,7 @@ package org.springboot.ey.company.springbootserviceusers.service;
 
 import org.springboot.ey.company.springbootserviceusers.dao.TelefonosDao;
 import org.springboot.ey.company.springbootserviceusers.dao.UsuariosDao;
+import org.springboot.ey.company.springbootserviceusers.dto.DataUsersPhone;
 import org.springboot.ey.company.springbootserviceusers.entity.Telefono;
 import org.springboot.ey.company.springbootserviceusers.dto.DataUsersIn;
 import org.springboot.ey.company.springbootserviceusers.entity.Usuarios;
@@ -19,7 +20,7 @@ public class UsuariosServiceImpl implements IUsuariosService{
 
 	@Autowired
 	private TelefonosDao telefonosDao;
-	
+
 	@Override
 	@Transactional(readOnly = true)
 	public List<Usuarios> findAll() {
@@ -32,25 +33,46 @@ public class UsuariosServiceImpl implements IUsuariosService{
 
 	@Override
 	public Usuarios addUser(DataUsersIn dataUsersIn) {
-		Usuarios user = usuariosDao.findByEmail(dataUsersIn.getEmail());
-		Usuarios usuariosAdd = null;
-		if (user == null) {
-			usuariosAdd = usuariosDao.save(new Usuarios(dataUsersIn.getName(), dataUsersIn.getEmail(), dataUsersIn.getPassword(), new Date(), new Date(), new Date(),  "", false));
+		Usuarios usuariosAdd = usuariosDao.save(new Usuarios(dataUsersIn.getName(), dataUsersIn.getEmail(), dataUsersIn.getPassword(), new Date(), new Date(), new Date(),  "", false));
 			if(!dataUsersIn.getPhones().isEmpty()){
-		for (Telefono objFono : dataUsersIn.getPhones()) {
-			telefonosDao.save(new Telefono(objFono.getNumber(), objFono.getCitycode(), objFono.getContrycode(), usuariosAdd.getId()));
-		}}
-		}
+				for (Telefono objFono : dataUsersIn.getPhones()) {
+					telefonosDao.save(new Telefono(objFono.getNumber(), objFono.getCitycode(), objFono.getContrycode(), usuariosAdd.getId()));
+				}
+			}
 		return usuariosAdd;
 	}
+
 	@Override
 	public void updateUserJwt(String email, String token, boolean activo) {
 		Usuarios user = usuariosDao.findByEmail(email);
 		if(user != null){
-		user.setIsactive(activo);
-		user.setToken(token);
-		user.setLast_login(new Date());
-		usuariosDao.save(user);}
+			user.setIsactive(activo)
+				.setToken(token)
+				.setLast_login(new Date());
+			usuariosDao.save(user);}
+		}
+
+	@Override
+	public void updateUserAndPhones(Long id, DataUsersPhone dataUsersIn) {
+		Usuarios user = usuariosDao.findById(id).get();
+		user.setEmail(dataUsersIn.getEmail())
+				.setModified(new Date())
+				.setName(dataUsersIn.getName())
+				.setPassword(dataUsersIn.getPassword());
+		usuariosDao.save(user);
+
+		if(!dataUsersIn.getPhones().isEmpty()) {
+			for (Telefono objFono : dataUsersIn.getPhones()) {
+				Telefono  phone = telefonosDao.findById(objFono.getId()).get();
+				if(phone != null){
+				phone.setCitycode(objFono.getCitycode())
+						.setContrycode(objFono
+						.getContrycode())
+						.setNumber(objFono.getNumber());
+				telefonosDao.save(phone);
+				}
+			}
+		}
 	}
 
 	@Override
@@ -61,10 +83,11 @@ public class UsuariosServiceImpl implements IUsuariosService{
 	@Override
 	public void deleteById(Long id){
 		List<Telefono> listaTelefonosUser = telefonosDao.findAllByIduser(id);
-		if(!listaTelefonosUser.isEmpty()){
-			for (Telefono objFono : listaTelefonosUser) {
-				telefonosDao.deleteById(objFono.getId());
-			}}
+			if(!listaTelefonosUser.isEmpty()){
+				for (Telefono objFono : listaTelefonosUser) {
+					telefonosDao.deleteById(objFono.getId());
+				}
+			}
 		usuariosDao.deleteById(id);
 	}
 }

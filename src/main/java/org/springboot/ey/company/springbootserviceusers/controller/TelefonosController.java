@@ -6,7 +6,6 @@ import org.springboot.ey.company.springbootserviceusers.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -21,11 +20,9 @@ public class TelefonosController {
 	@Autowired
 	TelefonosService telefonosService;
 
-	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping(value = "/listar", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ModelAndView  listarTelefonos(){
-		List<Telefono> telefonos;
-		telefonos = telefonosService.findAll();
+	public ModelAndView  listPhones(){
+		List<Telefono> telefonos = telefonosService.findAll();
 		if (!telefonos.isEmpty()) {
 			return ResponseUtil.getResponseOkListTelefonos(HttpStatus.OK.toString(), telefonos);
 		} else {

@@ -89,7 +89,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqdWxpYW5AZ21haWwuY29tIiwiaWF0IjoxNjYxMDMwMDEzLCJleHAiOjE2NjEwNjYwMTN9.FFX3oQhdjRMdNVJlSikjSF_FtBU1DpKA79GWfQFc8uL-8IRBwBCFyy08k8UOLy263MHfR48fju02UbVPuzDgEw",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqdWxpYW4yQGdtYWlsLmNvbSIsImlhdCI6MTY2MTEzNjM5MywiZXhwIjoxNjYxMTk2MzkzfQ.zAFbUdANUA9ptsA4agGll3rzy2eiJwPExp5KvKRYxJq3ut-wWQvcxA2D8qEKTpX9cnjkGoZy5B4Q6ISEGSTmtw",
 							"type": "string"
 						}
 					]
@@ -235,6 +235,48 @@
 						"v1",
 						"usuarios",
 						"delete",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Usuario y Telefonos",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqdWxpYW4yQGdtYWlsLmNvbSIsImlhdCI6MTY2MTEzNjM5MywiZXhwIjoxNjYxMTk2MzkzfQ.zAFbUdANUA9ptsA4agGll3rzy2eiJwPExp5KvKRYxJq3ut-wWQvcxA2D8qEKTpX9cnjkGoZy5B4Q6ISEGSTmtw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"julianSITO\",\r\n    \"email\": \"julian2@gmail.com\",\r\n    \"password\": \"Arrrr43\",\r\n    \"phones\": [\r\n        {\r\n            \"number\": \"9999999\",\r\n            \"citycode\": \"1\",\r\n            \"contrycode\": \"1\",\r\n            \"id\": 1\r\n        },\r\n        {\r\n            \"number\": \"88888888\",\r\n            \"citycode\": \"4\",\r\n            \"contrycode\": \"4\",\r\n             \"id\": 2\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8050/api/v1/usuarios/update/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8050",
+					"path": [
+						"api",
+						"v1",
+						"usuarios",
+						"update",
 						"1"
 					]
 				}
