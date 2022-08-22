@@ -9,7 +9,7 @@ Descripcion Api
 ====================
 
 Api que permite insertar un usuario con telefonos anexos en la base de datos de forma persistente utilizando Jwt y Hsqldb
-
+Se adjunta coleccion en postman para la prueba de los endpoints
 - - -
 
 Listado de servicios de la Api
